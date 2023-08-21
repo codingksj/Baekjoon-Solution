@@ -73,16 +73,13 @@ int main() {
 
 Words FillPokers() {
     Words pokers;
-    MapiS number = {
-        {0,"2"},{1,"3"},{2,"4"},{3,"5"},{4,"6"},
-        {5,"7"},{6,"8"},{7,"9"},{8,"10"},
-        {9,"Jack"},{10,"Queen"},{11,"King"},{12,"Ace"}
+    Words number = {
+        "2", "3", "4", "5", "6", "7", "8", "9", "10",
+        "Jack", "Queen", "King", "Ace"
     };
-    MapiS pattern = {
-        {0,"Clubs"},
-        {1,"Diamonds"},
-        {2,"Hearts"},
-        {3,"Spades"},
+
+    Words pattern = {
+        "Clubs", "Diamonds", "Hearts", "Spades"
     };
     string card;
 
