@@ -39,87 +39,73 @@ typedef unordered_map<string, string> HashSS;
 typedef vector<string> Words;
 typedef vector<vector<int>> Matrix2Di;
 
-Words PreProcessing(string& line);
-Words MoveScale(Words& pitch_names, int N);
+double CalcProbablity(char dealer, char myCard1, char myCard2, int n);
 
 int main() {
     cin.tie(NULL);
     ios::sync_with_stdio(false);
 
-    Words pitch_names;
-    string line;
+    char dealer, myCard1, myCard2;
+    double probablity;
     int N;
 
-    while (true) {
-        getline(cin, line);
-
-        if (line == "***") {
+    while (cin >> N) {
+        if (N == 0) {
             break;
         }
+        cin >> dealer >> myCard1 >> myCard2;
+        probablity = CalcProbablity(dealer, myCard1, myCard2, N);
 
-        pitch_names = PreProcessing(line);
-
-        cin >> N;
-        cin.ignore();
-
-        pitch_names = MoveScale(pitch_names, N);
-
-        for (string pitch_name : pitch_names) {
-            cout << pitch_name << ' ';
-        }
-
-        cout << "\n";
+        cout << setprecision(3) << fixed << probablity << "%" << "\n";
     }
 
     return 0;
 }
 
-Words PreProcessing(string& line) {
-    MapSS changeTable = {
-        {"Bb","A#"},
-        {"Cb","B"},
-        {"B#","C"},
-        {"Db","C#"},
-        {"Eb","D#"},
-        {"Fb","E"},
-        {"E#","F"},
+double CalcProbablity(char dealer, char myCard1, char myCard2, int n) {
+    map<char, int> table = {
+        {'A',11},
+        {'2',2},{'3',3},{'4',4},
+        {'5',5},{'6',6},{'7',7},
+        {'8',8},{'9',9},{'T',10},
+        {'J',10},{'Q',10},{'K',10},
+    };    
+    map<char, int> cards = {
+        {'A',4*n},
+        {'2',4*n},{'3',4*n},{'4',4*n},
+        {'5',4*n},{'6',4*n},{'7',4*n},
+        {'8',4*n},{'9',4*n},{'T',4*n},
+        {'J',4*n},{'Q',4*n},{'K',4*n},
     };
-    Words pitch_names;
-    string pitch_name, s;
-    string cur = line;
-    int maxL;
 
-    for (pair<const string, string>& p : changeTable) {
-        while (true) {
-            size_t pos = cur.find(p.first);
-            s = p.second;
-            maxL = p.first.length();
-            if (pos == string::npos) {
-                break;
-            }
-            cur.replace(pos, maxL, s);
+    int totalCards = 52 * n - 3;
+    int possibleWin = 0;
+    int sumMe = table[myCard1] + table[myCard2];
+    int dealerVal1 = table[dealer];
+    int dealerVal2;
+    int sumDealer;
+    double probablity;
+
+    cards[dealer]--;
+    cards[myCard1]--;
+    cards[myCard2]--;
+
+    if (sumMe == 22) {
+        sumMe = 12;
+    }
+
+    for (const pair<char, int>& p : cards) {
+        dealerVal2 = table[p.first];
+        sumDealer = dealerVal1 + dealerVal2;
+        if (sumDealer == 22) {
+            sumDealer = 12;
+        }
+        if (sumDealer < sumMe) {
+            possibleWin += p.second;
         }
     }
-    istringstream iss(cur);
 
-    while (iss >> pitch_name) {
-        pitch_names.push_back(pitch_name);
-    }
+    probablity = double(possibleWin * 100) / totalCards;
 
-    return pitch_names;
-};
-
-Words MoveScale(Words& pitch_names, int N) {
-    Words scale = { "A","A#","B","C","C#","D", "D#", "E","F","F#","G","G#" };
-    Words moved;
-    int index;
-
-    for (string& pitch_name : pitch_names) {
-        index = find(scale.begin(), scale.end(), pitch_name) - scale.begin();
-        index = (index + N) % 12;
-        (index < 0) && (index += 12);
-        moved.push_back(scale[index]);
-    }
-
-    return moved;
+    return probablity;
 };
