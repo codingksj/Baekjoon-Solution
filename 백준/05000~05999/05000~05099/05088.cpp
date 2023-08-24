@@ -41,7 +41,7 @@ typedef vector<vector<int>> Matrix2D_i;
 
 #define PI 3.141592653589793
 
-void InitGrid(int grid[102][102], int X, int Y, int size);
+void InitGrid(int grid[102][102], int size);
 void HideTreasures(int grid[102][102], int N);
 int FindTreasures(int grid[102][102], int N);
 
@@ -60,7 +60,7 @@ int main() {
 
         cin >> M;
 
-        InitGrid(grid, X, Y, 101);
+        InitGrid(grid, 101);
         HideTreasures(grid, M);
 
         cin >> N;
@@ -72,7 +72,7 @@ int main() {
     return 0;
 }
 
-void InitGrid(int grid[102][102], int X, int Y, int size) {
+void InitGrid(int grid[102][102], int size) {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             grid[i][j] = 0;
