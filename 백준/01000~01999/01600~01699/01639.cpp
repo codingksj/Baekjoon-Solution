@@ -51,7 +51,7 @@ typedef vector<string> Words;
 typedef vector<vector<int>> Matrix2D_i;
 typedef vector<vector<LL>> Matrix2D_L;
 
-int FIndMaxLuckyTicketLength(const string& ticket);
+int FindMaxLuckyTicketLength(const string& ticket);
 bool CheckLucky(const string& subTicket);
 
 int main() {
@@ -63,14 +63,14 @@ int main() {
 
     cin >> ticket;
 
-    length = FIndMaxLuckyTicketLength(ticket);
+    length = FindMaxLuckyTicketLength(ticket);
 
     cout << length << "\n";
 
     return 0;
 }
 
-int FIndMaxLuckyTicketLength(const string& ticket) {
+int FindMaxLuckyTicketLength(const string& ticket) {
     string subTicket;
     int length = 0;
     int maxL = ticket.length();
