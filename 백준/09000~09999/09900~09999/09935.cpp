@@ -53,7 +53,7 @@ typedef vector<vector<int>> Matrix2D_i;
 typedef vector<vector<LL>> Matrix2D_L;
 typedef vector<vector<double>> Matrix2D_d;
 
-string FIndStringAfterExplode(const string& word, const string& bomb);
+string FindStringAfterExplode(const string& word, const string& bomb);
 
 int main() {
     cin.tie(NULL);
@@ -65,14 +65,14 @@ int main() {
     getline(cin, word);
     getline(cin, bomb);
 
-    ans = FIndStringAfterExplode(word, bomb);
+    ans = FindStringAfterExplode(word, bomb);
 
     cout << ans << "\n";
 
     return 0;
 }
 
-string FIndStringAfterExplode(const string& word, const string& bomb) {
+string FindStringAfterExplode(const string& word, const string& bomb) {
     vector<char> wordStk;
     string ans;
     int bombSize, wordSize;
