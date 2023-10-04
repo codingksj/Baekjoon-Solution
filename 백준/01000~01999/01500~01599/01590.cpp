@@ -55,9 +55,9 @@ typedef struct Bus {
     LL startT;
     LL intervalT;
     LL totalBus;
-};
+}Bus;
 
-LL FIndMinWaitTIme(const LL N, const LL T);
+LL FindMinWaitTIme(const LL N, const LL T);
 LL BinarySearch(const LL T, const Bus& bus);
 
 int main() {
@@ -69,14 +69,14 @@ int main() {
 
     cin >> N >> T;
 
-    time = FIndMinWaitTIme(N, T);
+    time = FindMinWaitTIme(N, T);
 
     cout << time << "\n";
 
     return 0;
 }
 
-LL FIndMinWaitTIme(const LL N, const LL T) {
+LL FindMinWaitTIme(const LL N, const LL T) {
     Bus bus;
     const LL MAX = (1LL << 32);
     LL time, minTime = MAX;
