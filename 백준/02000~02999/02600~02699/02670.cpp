@@ -52,7 +52,7 @@ typedef vector<string> Words;
 typedef vector<vector<int>> Matrix2D_i;
 typedef vector<vector<LL>> Matrix2D_L;
 
-double FIndMaxPartialProduct(const vector<double>& V, const int N);
+double FindMaxPartialProduct(const vector<double>& V, const int N);
 
 int main() {
     cin.tie(NULL);
@@ -70,14 +70,14 @@ int main() {
         cin >> e;
     }
 
-    maxProduct = FIndMaxPartialProduct(V, N);
+    maxProduct = FindMaxPartialProduct(V, N);
 
     cout << setprecision(3) << fixed << maxProduct << "\n";
 
     return 0;
 }
 
-double FIndMaxPartialProduct(const vector<double>& V, const int N) {
+double FindMaxPartialProduct(const vector<double>& V, const int N) {
     double curProduct;
     double maxProduct = 0;
 
