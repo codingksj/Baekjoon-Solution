@@ -19,13 +19,14 @@
 #include<iomanip>
 #include<chrono>
 
-//사용자 정의 상수
+// ---------- 사용자 정의 상수 ----------
 #define PI 3.141592653589793
 #define THOUSAND 1E+3
 #define MILLION 1E+6
 #define BILLION 1E+9
+#define INF 1E+8
 
-//사용자 정의 자료형
+// ---------- 사용자 정의 자료형 ----------
 using namespace std;
 
 typedef long long LL;
@@ -44,53 +45,125 @@ typedef pair<string, int> PSi;
 typedef pair<string, LL> PSL;
 typedef pair<string, string> PSS;
 
-typedef tuple<int, int, int> Tiii;
-
-typedef map<int, int> Mapii;
-typedef map<int, string> MapiS;
-typedef map<LL, LL> MapLL;
-typedef map<string, char> MapSc;
-typedef map<string, int> MapSi;
-typedef map<string, string> MapSS;
-typedef map<string, LL> MapSL;
-
-typedef unordered_map<LL, LL> HashLL;
-typedef unordered_map<string, bool> HashSb;
-typedef unordered_map<string, LL> HashSL;
-typedef unordered_map<string, double> HashSd;
-typedef unordered_map<string, string> HashSS;
-
 typedef vector<string> Words;
-typedef vector<vector<bool>> Matrix2D_b;
-typedef vector<vector<int>> Matrix2D_i;
-typedef vector<vector<LL>> Matrix2D_L;
-typedef vector<vector<double>> Matrix2D_d;
-typedef vector<Matrix2D_b> Matrix3D_b;
-typedef vector<Matrix2D_i> Matrix3D_i;
 
-//사용자 정의 연산자
+// ---------- 템플릿 자료형 ----------
+template<typename T> struct Matrix2D {
+    vector<vector<T>> m2;
 
+    Matrix2D() {};
+    Matrix2D(const size_t R, const size_t C, const T INIT) {
+        m2 = vector<vector<T>>(R, vector<T>(C, INIT));
+    }
+};
+template<typename T> struct Matrix3D {
+    vector<vector<vector<T>>> m3;
 
-//템플릿 함수
-template<typename T> vector<T> InitVector(const int SIZE, const T INIT) { return vector<T>(SIZE, INIT); }
-template<typename T> vector<vector<T>> Init2DVector(const int R, const int C, const T INIT) { return vector<vector<T>>(R, vector<T>(C, INIT)); }
+    Matrix3D() {};
+    Matrix3D(const size_t H, const size_t R, const size_t C, const T INIT) {
+        m3 = vector<vector<vector<T>>>(H, vector<vector<T>>(R, vector<T>(C, INIT)));
+    }
+};
 
-template<typename T> vector<T> LoadVector(const int SIZE) { vector<T> V(SIZE); for (T& e : V) { cin >> e; } return V; }
-template<typename T> vector<vector<T>> Load2DVector(const int R, const int C) { vector<vector<T>> V(R, vector<T>(C)); for (vector<T>& row : V) { for (T& e : row) { cin >> e; } } return V; }
-template<typename T1, typename T2> vector<pair<T1, T2>> LoadPairVector(const int SIZE) { vector<pair<T1, T2>> V(SIZE); for (pair<T1, T2>& p : V) { cin >> p.first >> p.second; } return V; }
+// ---------- 템플릿 함수 ----------
+template<typename T> vector<T> InitVector(const size_t SIZE, const T INIT) {
+    return vector<T>(SIZE, INIT);
+}
+template<typename T> vector<vector<T>> Init2DVector(const size_t R, const size_t C, const T INIT) {
+    return vector<vector<T>>(R, InitVector(C, INIT));
+}
+template<typename T> vector<vector<vector<T>>> Init3DVector(const size_t H, const size_t R, const size_t C, const T INIT) {
+    return vector<vector<vector<T>>>(H, Init2DVector(R, C, INIT));
+}
 
-template<typename T> void PrintVector(const vector<T>& V, const string seps) { for (const T& e : V) { cout << e << seps; } }
-template<typename T> void Print2DVector(const vector<vector<T>>& V, const string sepsR, const string sepsC) { for (const vector<T>& row : V) { PrintVector(row, sepsC); cout << sepsR; } }
+template<typename T1, typename T2> pair<T1, T2> LoadPair() {
+    pair<T1, T2> p;
+    cin >> p.first >> p.second;
+    return p;
+};
+template<typename T> vector<T> LoadVector(const size_t SIZE) {
+    vector<T> V(SIZE);
+    for (T& e : V) {
+        cin >> e;
+    }
+    return V;
+}
+template<typename T1, typename T2> vector<pair<T1, T2>> LoadVector(const size_t SIZE) {
+    vector<pair<T1, T2>> V(SIZE);
+    for (pair<T1, T2>& p : V) {
+        p = LoadPair<T1, T2>();
+    }
+    return V;
+}
+template<typename T> vector<vector<T>> Load2DVector(const size_t R, const size_t C) {
+    vector<vector<T>> V(R, vector<T>(C));
+    for (vector<T>& row : V) {
+        row = LoadVector<T>(C);
+    }
+    return V;
+}
+template<typename T1, typename T2> vector<vector<pair<T1, T2>>> Load2DVector(const size_t R, const size_t C) {
+    vector<vector<pair<T1, T2>>> V(R, vector<pair<T1, T2>>(C));
+    for (vector<pair<T1, T2>>& row : V) {
+        row = LoadVector<T1, T2>(C);
+    }
+    return V;
+}
 
-template<typename T, typename Compare = less<T>> void Sort(vector<T>& V, Compare cmp = Compare()) { sort(V.begin(), V.end(), cmp); }
-template<typename T, typename Compare = less<T>> void Sort2D(vector<vector<T>>& V, Compare cmp = Compare()) { for (vector<T>& row : V) { sort(row.begin(), row.end(), cmp); } }
-template<typename T, typename Compare = less<T>> void StableSort(vector<T>& V, Compare cmp = Compare()) { stable_sort(V.begin(), V.end(), cmp); }
-template<typename T, typename Compare = less<T>> void StableSort2D(vector<vector<T>>& V, Compare cmp = Compare()) { for (vector<T>& row : V) { stable_sort(row.begin(), row.end(), cmp); } }
+template<typename T1, typename T2> void PrintPair(const pair<T1, T2>& p, const string sepsPair) {
+    cout << p.first << sepsPair << p.second;
+}
+template<typename T> void PrintVector(const vector<T>& V, const string sepsC) {
+    for (const T& e : V) {
+        cout << e << sepsC;
+    }
+}
+template<typename T1, typename T2> void PrintVector(const vector<pair<T1, T2>>& V, const string sepsC, const string sepsPair) {
+    for (const pair<T1, T2>& p : V) {
+        PrintPair<T1, T2>(p, sepsPair);
+        cout << sepsC;
+    }
+}
+template<typename T> void Print2DVector(const vector<vector<T>>& V, const string sepsR, const string sepsC) {
+    for (const vector<T>& row : V) {
+        PrintVector(row, sepsC);
+        cout << sepsR;
+    }
+}
+template<typename T1, typename T2> void Print2DVector(const vector<vector<pair<T1, T2>>>& V, const string sepsR, const string sepsC, const string sepsPair) {
+    for (const vector<pair<T1, T2>>& row : V) {
+        PrintVector<T1, T2>(row, sepsC, sepsPair);
+        cout << sepsR;
+    }
+}
 
-template<typename T> size_t LowerBoundIndex(const vector<T>& V, const T target) { const size_t index = lower_bound(V.begin(), V.end(), target) - V.begin(); return index; }
-template<typename T> size_t UpperBoundIndex(const vector<T>& V, const T target) { const size_t index = upper_bound(V.begin(), V.end(), target) - V.begin(); return index; }
+template<typename T, typename Compare = less<T>> void SortAll(vector<T>& V, Compare cmp = Compare()) {
+    sort(V.begin(), V.end(), cmp);
+}
+template<typename T, typename Compare = less<T>> void SortAll2D(vector<vector<T>>& V, Compare cmp = Compare()) {
+    for (vector<T>& row : V) {
+        Sort(row, cmp);
+    }
+}
+template<typename T, typename Compare = less<T>> void StableSortAll(vector<T>& V, Compare cmp = Compare()) {
+    stable_sort(V.begin(), V.end(), cmp);
+}
+template<typename T, typename Compare = less<T>> void StableSortAll2D(vector<vector<T>>& V, Compare cmp = Compare()) {
+    for (vector<T>& row : V) {
+        StableSort(row, cmp);
+    }
+}
 
-//사용자 지정 함수
+template<typename T> size_t LowerBoundIndex(const vector<T>& V, const T target) {
+    const size_t index = lower_bound(V.begin(), V.end(), target) - V.begin();
+    return index;
+}
+template<typename T> size_t UpperBoundIndex(const vector<T>& V, const T target) {
+    const size_t index = upper_bound(V.begin(), V.end(), target) - V.begin(); 
+    return index;
+}
+
+// ---------- 사용자 정의 함수 ----------
 int LCS(const string& s1, const string& s2);
 
 int main() {
@@ -110,19 +183,19 @@ int main() {
 }
 
 int LCS(const string& s1, const string& s2) {
-    Matrix2D_i dp;
+    Matrix2D<int> dp;
     int len1 = s1.length();
     int len2 = s2.length();
 
-    dp = Init2DVector<int>(len1 + 1, len2 + 1, 0);
+    dp = Matrix2D<int>(len1 + 1, len2 + 1, 0);
 
     for (int i = 1; i <= len1; i++) {
         for (int j = 1; j <= len2; j++) {
-            dp[i][j] = (s1[i - 1] == s2[j - 1]) ?
-                dp[i - 1][j - 1] + 1 :
-                max(dp[i - 1][j], dp[i][j - 1]);
+            dp.m2[i][j] = (s1[i - 1] == s2[j - 1]) ?
+                dp.m2[i - 1][j - 1] + 1 :
+                max(dp.m2[i - 1][j], dp.m2[i][j - 1]);
         }
     }
 
-    return dp[len1][len2];
+    return dp.m2[len1][len2];
 };
