@@ -1,23 +1,4 @@
-#include<iostream>
-#include<sstream>
-#include<bitset>
-#include<set>
-#include<unordered_map>
-#include<map>
-#include<vector>
-#include<queue>
-#include<deque>
-#include<stack>
-#include<tuple>
-#include<algorithm>
-#include<string>
-#include<numeric>
-#include<functional>
-#include<cmath>
-#include<cctype>
-#include<cstring>
-#include<iomanip>
-#include<chrono>
+#include<bits/stdc++.h>
 
 // ---------- 사용자 정의 상수 ----------
 #define PI 3.141592653589793
@@ -25,7 +6,7 @@
 #define MILLION 1E+6
 #define BILLION 1E+9
 #define INF 1E+8
-#define MAX 1E+7
+#define EPSILON 1E-9
 
 // ---------- 사용자 정의 자료형 ----------
 using namespace std;
@@ -39,6 +20,7 @@ typedef pair<char, int> Pci;
 typedef pair<char, string> PcS;
 typedef pair<int, bool> Pib;
 typedef pair<int, int> Pii;
+typedef pair<int, char> Pic;
 typedef pair<int, string> PiS;
 typedef pair<double, double> Pdd;
 typedef pair<LL, LL> PLL;
@@ -64,6 +46,14 @@ template<typename T> struct Matrix3D {
     Matrix3D(const size_t H, const size_t R, const size_t C, const T INIT) {
         m3 = vector<vector<vector<T>>>(H, vector<vector<T>>(R, vector<T>(C, INIT)));
     }
+};
+
+template<typename Number> struct Point2D {
+    Number x;
+    Number y;
+
+    Point2D() {};
+    Point2D(const Number x, const Number y) : x(x), y(y) {};
 };
 
 // ---------- 템플릿 함수 ----------
@@ -164,45 +154,59 @@ template<typename T> size_t UpperBoundIndex(const vector<T>& V, const T target) 
     return index;
 }
 
-// ---------- 사용자 정의 함수 및 연산자 ----------
-void NQueen(const int row, const int N);
-bool CheckAvailable(const int N);
+template<typename Number> vector<Number> InitArithmeticSeq(const size_t N, const Number firstTerm = 1, const Number commonDiff = 1) {
+    vector<Number> seq;
 
-vector<int> cols(15);
-int positionCount = 0;
+    for (size_t i = 0; i < N; i++) {
+        seq.push_back(firstTerm + i * commonDiff);
+    }
+
+    return seq;
+}
+template<typename Number> Number CCW(const Point2D<Number>& a, const Point2D<Number>& b, const Point2D<Number>& c) {
+    return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+}
+
+// ---------- 열거형 상수 ----------
+
+// ---------- 사용자 정의 함수 및 연산자 ----------
+void NQueen(vector<int>& rows, const int row, const int N, int& possibleBoard);
+bool CheckBoard(vector<int>& rows, const int row);
 
 int main() {
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
 
-    int N;
+    vector<int> rows;
+    int N, possibleBoard = 0;
 
     cin >> N;
 
-    NQueen(0, N);
+    rows = InitVector<int>(N, 0);
+    NQueen(rows, 0, N, possibleBoard);
 
-    cout << positionCount << "\n";
+    cout << possibleBoard << "\n";
 
     return 0;
 }
 
-void NQueen(const int row, const int N) {
+void NQueen(vector<int>& rows, const int row, const int N, int& possibleBoard) {
     if (row == N) {
-        positionCount++;
+        possibleBoard++;
         return;
     }
-    for (int i = 0; i < N; i++) {
-        cols[row] = i;
-        if (CheckAvailable(row)) {
-            NQueen(row + 1, N);
+
+    for (int col = 0; col < N; col++) {
+        rows[row] = col;
+        if (CheckBoard(rows, row)) {
+            NQueen(rows, row + 1, N, possibleBoard);
         }
     }
 };
 
-
-bool CheckAvailable(const int row) {
+bool CheckBoard(vector<int>& rows, const int row) {
     for (int i = 0; i < row; i++) {
-        if (cols[i] == cols[row] || abs(cols[i] - cols[row]) == row - i) {
+        if (rows[i] == rows[row] || row - i == abs(rows[row] - rows[i])) {
             return false;
         }
     }
