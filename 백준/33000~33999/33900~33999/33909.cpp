@@ -89,7 +89,7 @@ template<typename T1, typename T2> void PrintPair(const pair<T1, T2>& p, const s
 template<typename T> void PrintVector(const vector<T>& V, const string sepsC = " ", const string suffix = "\n") {
     for (auto it = V.begin(); it != V.end(); it++) {
         cout << *it;
-		cout << (it + 1 != V.end() ? sepsC : suffix);
+        cout << (it + 1 != V.end() ? sepsC : suffix);
     }
 }
 template<typename T1, typename T2> void PrintVector(const vector<pair<T1, T2>>& V, const string sepsPair = " ", const string suffix = "\n") {
@@ -117,6 +117,12 @@ template<typename T, typename Compare = less<T>> void SortAll2D(vector<vector<T>
     }
 }
 
+template<typename T> size_t MxIndex(const vector<T>& V, const size_t ds = 0, const size_t de = 0) {
+    return max_element(V.begin() + ds, V.end() - de) - V.begin();
+}
+template<typename T> size_t MnIndex(const vector<T>& V, const size_t ds = 0, const size_t de = 0) {
+    return min_element(V.begin() + ds, V.end() - de) - V.begin();
+}
 template<typename T> size_t LBIndex(const vector<T>& V, const T target, const size_t ds = 0, const size_t de = 0) {
     return lower_bound(V.begin() + ds, V.end() - de, target) - V.begin();
 }
@@ -156,7 +162,7 @@ void Solve();
 void Output();
 
 // ---------- 전역 변수 ----------
-int S, C, O, N, B;
+int M, N, T, res;
 
 int main() {
     FastIO();
@@ -179,20 +185,17 @@ void SetUp() {
 };
 
 bool Input() {
-    cin >> S >> C >> O >> N;
+    cin >> N >> M >> T;
+
     return true;
 };
 
 void Solve() {
-    C += 2 * O;
-    S += N;
-    B = min(C / 6, S / 3);
-
+    res = 2 * N;
     return;
 }
 
-
 void Output() {
-    cout << B << "\n";
+    cout << res << "\n";
     return;
 };
