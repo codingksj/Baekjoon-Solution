@@ -157,7 +157,6 @@ void FastIO();
 void SetUp();
 bool Input();
 void Solve();
-//bool Compare(const Pii& p1, const Pii& p2);
 void Output();
 
 // ---------- 전역 변수 ----------
