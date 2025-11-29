@@ -187,7 +187,7 @@ void SetUp() {
 bool Input() {
     cin >> N;
 
-    return N;
+    return true;
 };
 
 void Solve() {
