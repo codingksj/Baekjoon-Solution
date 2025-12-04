@@ -218,7 +218,6 @@ void Solve() {
     }
 }
 
-
 LL Init(int node, int st, int ed) {
     if (st == ed) {
         return tree[node] = V[st];
@@ -255,7 +254,6 @@ LL Query(int node, int st, int ed) {
 
     return (leftMul * rightMul) % MOD;
 };
-
 
 void Output() {
     return;
