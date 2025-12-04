@@ -237,7 +237,6 @@ Pii Query(int node, int st, int ed) {
     return Pii(min(leftQ.first, rightQ.first), max(leftQ.second, rightQ.second));
 };
 
-
 void Output() {
     return;
 };
