@@ -201,17 +201,10 @@ void Solve() {
     d = abs(dx) + abs(dy);
     if (d & 1) {
         isExist = false;
+        return;
     }
-    else {
-        if (abs(dy) > abs(dx)) {
-            xp = xb;
-            yp = yb + (dy < 0 ? d / 2 : -d / 2);
-        }
-        else {
-            yp = yb;
-            xp = xb + (dx < 0 ? d / 2 : -d / 2);
-        }
-    }
+    xp = xb + !(abs(dy) > abs(dx)) * (dx < 0 ? d / 2 : -d / 2);
+    yp = yb + (abs(dy) > abs(dx)) * (dy < 0 ? d / 2 : -d / 2);
 };
 
 void Output() {
