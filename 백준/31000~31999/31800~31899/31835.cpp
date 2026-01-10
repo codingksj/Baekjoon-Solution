@@ -154,31 +154,12 @@ bool Input() {
 };
 
 void Solve() {
-	char oper = N > 1 ? opers[N - 2] : '|';
-	char rightVal = opers.back();
-	char leftVal = Compress(opers);
-	char res = Eval(oper, leftVal, rightVal);
+	char op = N > 1 ? opers[N - 2] : '|';
+	char r = opers.back();
+	char l = Compress(opers);
+	char res = Eval(op, l, r);
 
-	mnEdit = (res != want) * (1 + ((rightVal == leftVal) && (N > 1)));
-
-	if (mnEdit < 2 || N == 1) {
-		return;
-	}
-	for (int i = 0; i < N; i++) {
-		opers[i] = Modify(opers[i]);
-
-		oper = opers[N - 2];
-		rightVal = opers.back();
-		leftVal = Compress(opers);
-		res = Eval(oper, leftVal, rightVal);
-
-		opers[i] = Modify(opers[i]);
-
-		if (res == want) {
-			mnEdit = 1;
-			return;
-		}
-	}
+	mnEdit = (res != want) * (1 + ((l == 'T' && r == 'T' && op == '|') || (l == 'F' && r == 'F' && op == '&')) * (N > 1));
 	return;
 };
 
