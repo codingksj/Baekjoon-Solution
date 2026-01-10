@@ -113,7 +113,6 @@ void FastIO();
 void SetUp();
 bool Input();
 void Solve();
-char Modify(char val);
 char Eval(char op, char l, char r);
 char Compress(const Vc& opers);
 void Output();
@@ -162,16 +161,6 @@ void Solve() {
 	mnEdit = (res != want) * (1 + ((l == 'T' && r == 'T' && op == '|') || (l == 'F' && r == 'F' && op == '&')) * (N > 1));
 	return;
 };
-
-char Modify(char val) {
-	switch (val) {
-		case '&': return '|';
-		case '|': return '&';
-		case 'T': return 'F';
-		case 'F': return 'T';
-		default:  return val;
-	}
-}
 
 char Eval(char op, char l, char r) {
 	return "FT"[op == '|' ? l == 'T' || r == 'T' : l == 'T' && r == 'T'];
