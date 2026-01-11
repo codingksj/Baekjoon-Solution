@@ -117,8 +117,8 @@ void Solve();
 void Output();
 
 // ---------- 전역 변수 ----------
-Vi oven;
-int D, N, pizza, lim, res;
+Vi ovens, pizzas;
+int D, N, pizza, limit, res;
 
 int main() {
     FastIO();
@@ -143,30 +143,35 @@ void SetUp() {
 bool Input() {
 	cin >> D >> N;
 
-	oven = LoadVec<int>(D);
+	ovens = LoadVec<int>(D);
 
     return true;
 };
 
 void Solve() {
 	for (int i = 1; i < D; i++) {
-		oven[i] = min(oven[i], oven[i - 1]);
+		ovens[i] = min(ovens[i], ovens[i - 1]);
 	}
-	lim = D;
+	limit = D - 1;
 	for (int i = 0; i < N; i++) {
 		cin >> pizza;
-		auto it = upper_bound(oven.begin(), oven.begin() + lim, pizza, greater<int>());
-		int idx = distance(oven.begin(), it);
-		if (idx == 0) {
+		while (limit >= 0 && ovens[limit] < pizza) {
+			limit--;
+		}
+		if (limit < 0) {
 			res = 0;
 			return;
 		}
-		lim = idx - 1;
-		res = idx;
+		if (i == N - 1) {
+			res = ++limit;
+			return;
+		}
+		--limit;
 	}
 	return;
 };
 
 void Output() {
 	print("{}\n", res);
+	return;
 };
