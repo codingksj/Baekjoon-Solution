@@ -100,6 +100,6 @@ void Solve() {
 };
 
 void Output() {
-	cout << mnCost << "\n";
+	println("{}", mnCost);
 	return;
 };
