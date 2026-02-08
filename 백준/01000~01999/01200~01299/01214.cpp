@@ -34,6 +34,7 @@ void Output();
 
 // ---------- 전역 변수 ----------
 LL D, P, Q, mnCost;
+LL g, x, mxY, d, nd, q, r;
 
 int main() {
 	FastIO();
@@ -65,7 +66,6 @@ void Solve() {
 	if (P > Q) {
 		swap(P, Q);
 	}
-	auto Ceil = [](LL a, LL b) { return (a + b - 1) / b; };
 	if (!(D % P) || !(D % Q) || !(D % (P + Q))) {
 		mnCost = D;
 		return;
@@ -74,23 +74,20 @@ void Solve() {
 		mnCost = P;
 		return;
 	}
+	auto Ceil = [](LL a, LL b) { return (a + b - 1) / b; };
 	if (D > P && D <= Q) {
 		mnCost = min(Q, P * Ceil(D, P));
 		return;
 	}
-	LL g = gcd(P, Q);
+	g = gcd(P, Q);
 	D = (D + g - 1) / g;
 	P /= g, Q /= g;
-	LL d = D + P;
-	LL mxY = min(P, Ceil(D, Q));
-	for (LL y = 0; y <= mxY; y++) {
-		LL r = D - Q * y;
-		if (!r) {
-			mnCost = D;
-			return;
-		}
-		LL x = r <= 0 ? 0 : Ceil(r, P);
-		LL nd = P * x + Q * y;
+	d = D + P;
+	mxY = min(P, Ceil(D, Q));
+	for (LL y : Rng(0, mxY + 1)) {
+		r = D - Q * y;
+		x = (r > 0) * Ceil(r, P);
+		nd = P * x + Q * y;
 		if (nd < d) {
 			d = nd;
 		}
