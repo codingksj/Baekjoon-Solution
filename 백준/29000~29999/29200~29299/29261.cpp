@@ -28,10 +28,9 @@ void FastIO();
 void SetUp();
 bool Input();
 void Solve();
-LL Count(int p);
+int Count(int p);
 void Output();
 
-V1<int> primes;
 int dp[MAX + 1];
 bitset<MAX + 1> isPrimes;
 int P;
@@ -65,12 +64,6 @@ void SetUp() {
             }
         }
     }
-    primes.push_back(2);
-    for (int p = 3; p <= MAX; p+=2) {
-        if (isPrimes[p]) {
-            primes.push_back(p);
-        }
-    }
     return;
 };
 
@@ -85,7 +78,7 @@ void Solve() {
     return;
 };
 
-LL Count(int p) {
+int Count(int p) {
     if (dp[p] != -1) {
         return dp[p];
     }
