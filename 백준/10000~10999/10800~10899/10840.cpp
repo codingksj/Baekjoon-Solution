@@ -19,7 +19,7 @@ namespace CONSTS {
     constexpr string_view SEPS = " \n";
     constexpr string_view target = "long";
     constexpr Pii DT4[4] = { {-1,0}, {0,1} ,{1,0} ,{0,-1} };
-    constexpr ULL MAX = 1501, MOD = 1E+9 + 7, INF = 0x3f3f3f3f;
+    constexpr ULL MAX = 1501, MOD = 7, INF = 0x3f3f3f3f;
     constexpr int DIGITS = 10, ALPHABETS = 26;
     constexpr auto Rng = views::iota;
     constexpr auto Step = views::stride;
@@ -33,7 +33,6 @@ void Solve();
 void Output();
 
 map<Node, int> hashS;
-set<Node> hashT;
 string s, t;
 ULL pows[1 << 3] = {1ULL, };
 int N, M, mxL;
