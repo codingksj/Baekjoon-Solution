@@ -31,10 +31,10 @@ bool Input();
 void Solve();
 void Output();
 
-set<Bitset> combs;
-bitset<MAX + 1> S, T, mask(ULLONG_MAX);
+unordered_set<bitset<MAX + 1>> combs;
+bitset<MAX + 1> S, T;
 string s, t;
-int N, repeat;
+int N;
 bool canMake;
 
 int main() {
@@ -65,27 +65,18 @@ bool Input() {
 
 void Solve() {
     N = s.size();
-    repeat = (N + SHIFT - 1) / SHIFT;
     S = bitset<MAX + 1>(s);
     T = bitset<MAX + 1>(t);
 
-    auto Convert = [&](bitset<MAX + 1> b) {
-        Bitset A = Bitset();
-        for (int i = 0; i < repeat; i++) {
-            A[i] = (b & mask).to_ullong();
-            b >>= SHIFT;
-        }
-        return A;
-    };
     for (int i : Rng(0, N)) {
-        combs.insert(Convert(S ^ T));
+        combs.insert(S ^ T);
         bool b = S[N - 1];
         S <<= 1;
         S[0] = b;
         S[N] = 0;
     }
     for (int i : Rng(0, N)) {
-        if (combs.count(Convert(S))) {
+        if (combs.count(S)) {
             canMake = true;
             return;
         }
