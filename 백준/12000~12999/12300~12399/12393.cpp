@@ -18,7 +18,7 @@ namespace CONSTS {
     constexpr string_view SEPS = " \n";
     constexpr PLL NONE = { -1,-1 };
     constexpr Pii DT4[4] = { {-1,0}, {0,1} ,{1,0} ,{0,-1} };
-    constexpr ULL MOD = 1E+9 + 7, INF = 0x3f3f3f3f, MAX = 500, PICK = 20;
+    constexpr ULL MOD = 1E+9 + 7, INF = 0x3f3f3f3f, MAX = 500, PICK = 21;
     constexpr int DIGITS = 10, ALPHABETS = 26;
     constexpr auto Rng = views::iota;
     constexpr auto Step = views::stride;
@@ -81,7 +81,7 @@ void Solve() {
     res = -1;
     target = -1;
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 2; i++) {
         iota(idx, idx + N, 0);
         shuffle(idx, idx + N, gen);
         sums.clear();
@@ -126,20 +126,16 @@ void FindDFS(int depth, LL sum, int pick) {
 
 void Output() {
     println("Case #{}:", ++tc);
-    if (res == -1) {
-        println("Impossible");
-        return;
-    }
     int res1 = sums[target];
     int res2 = res;
     int b1 = bit_width((size_t)res1) - 1;
     int b2 = bit_width((size_t)res2) - 1;
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < PICK; i++) {
         if ((1 << i) & res1) {
             print("{}{}", A[pick1[i]], SEPS[i == b1]);
         }
     }
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < PICK; i++) {
         if ((1 << i) & res2) {
             print("{}{}", A[pick2[i]], SEPS[i == b2]);
         }
