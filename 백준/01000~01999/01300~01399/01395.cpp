@@ -14,9 +14,9 @@ template<typename T> using V3 = V1<V2<T>>;
 
 namespace CONSTS {
     constexpr string_view SEPS = " \n";
-    constexpr bitset<1 << 10> MASK = bitset<1 << 10>().set();
+    constexpr bitset<1 << 11> MASK = bitset<1 << 11>().set();
     constexpr Pii DT4[4] = { {-1,0}, {0,1} ,{1,0} ,{0,-1} };
-    constexpr ULL MOD = 1E+9 + 7, INF = 0x3f3f3f3f, MAX = 1E+5, SHIFT = 10, BUCKET = 1 << SHIFT;
+    constexpr ULL MOD = 1E+9 + 7, INF = 0x3f3f3f3f, MAX = 1E+5, SHIFT = 11, BUCKET = 1 << SHIFT;
     constexpr int DIGITS = 10, ALPHABETS = 26;
     constexpr auto Rng = views::iota;
     constexpr auto Step = views::stride;
@@ -27,7 +27,6 @@ void FastIO();
 void SetUp();
 bool Input();
 void Solve();
-
 void Output();
 
 bitset<BUCKET> bs[MAX / BUCKET + 1];
@@ -69,9 +68,9 @@ void Solve() {
             counts[q1] = bs[q1].count();
         }
         else {
-            for (int block = q1 + 1; block < q2; block++) {
-                bs[block].flip();
-                counts[block] = BUCKET - counts[block];
+            for (int b = q1 + 1; b < q2; b++) {
+                bs[b].flip();
+                counts[b] = BUCKET - counts[b];
             }
             bs[q1] ^= (MASK << r1);  
             counts[q1] = bs[q1].count();
