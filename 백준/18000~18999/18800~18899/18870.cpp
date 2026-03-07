@@ -1,70 +1,85 @@
-#include<iostream>
-#include<sstream>
-#include<bitset>
-#include<set>
-#include<unordered_map>
-#include<map>
-#include<vector>
-#include<queue>
-#include<deque>
-#include<stack>
-#include<algorithm>
-#include<string>
-#include<numeric>
-#include<cmath>
-#include<cctype>
-#include<cstring>
-#include<iomanip>
-#include<chrono>
+#include<bits/stdc++.h>
+#include<ranges>
+#include<print>
 
 using namespace std;
 
-typedef long long LL;
-typedef unsigned long long ULL;
-typedef long double LD;
-typedef pair<int, int> Pii;
-typedef pair<LL, LL> PLL;
+using LL = long long;
+using ULL = unsigned long long;
+using Pii = pair<int, int>;
+using PLL = pair<LL, LL>;
+using Ti3 = tuple<int, int, int>;
+template<typename T> using V1 = vector<T>;
+template<typename T> using V2 = V1<V1<T>>;
+template<typename T> using V3 = V1<V2<T>>;
+
+namespace CONSTS {
+    constexpr string_view SEPS = " \n";
+    constexpr Pii DT4[4] = { {-1,0}, {0,1}, {1,0}, {0,-1} };
+    constexpr ULL MOD = 1E+9 + 7, INF = 0x3f3f3f3f, MAX = 1E+6, MAX_N = 1E+9;
+    constexpr int DIGITS = 10, ALPHABETS = 26;
+    constexpr auto Rng = views::iota;
+    constexpr auto Step = views::stride;
+}
+using namespace CONSTS;
+
+void FastIO();
+void SetUp();
+bool Input();
+void Solve();
+void Output();
+
+Pii A[MAX];
+int N, cnt;
 
 int main() {
-	cin.tie(NULL);
-	ios::sync_with_stdio(false);
+    FastIO();
+    SetUp();
 
-	set<LL> coords;
-	vector<LL> X, table;
-	LL x;
-	int TC;
-	int left, mid, right;
-	int size;
+    Input();
+    Solve();
+    Output();
 
-	cin >> TC;
-
-	while (TC--) {
-		cin >> x;
-		X.push_back(x);
-		coords.insert(x);
-	}
-	table = vector<LL>(coords.begin(), coords.end());
-	coords.clear();
-	size = table.size();
-
-	for (LL x : X) {
-		left = 0;
-		right = size - 1;
-
-		while (left <= right) {
-			mid = (left + right) / 2;
-
-			if (table[mid] == x) {
-				cout << mid << " ";
-				break;
-			}
-			else if (table[mid] < x) {
-				left = mid + 1;
-			}
-			else {
-				right = mid - 1;
-			}
-		}
-	}
     return 0;
 }
+
+void FastIO() {
+    ios::sync_with_stdio(false); cin.tie(nullptr);
+    return;
+};
+
+void SetUp() {
+    return;
+};
+
+bool Input() {
+    cin >> N;
+
+    for (int i = 0; i < N; i++) {
+        cin >> A[i].first;
+        A[i].second = i;
+    }
+    return true;
+};
+
+void Solve() {
+    ranges::sort(A | views::take(N));
+    int target = A[0].first;
+    for (int i = 0; i < N; i++) {
+        if (A[i].first == target) {
+            A[i].first = cnt;
+        }
+        else {
+            target = A[i].first;
+            A[i].first = ++cnt;
+        }
+    }
+    ranges::sort(A | views::take(N), [&](const Pii& p1, const Pii& p2) {return p1.second < p2.second; });
+};
+
+void Output() {
+    for (int i = 0; i < N; i++) {
+        print("{}{}", A[i].first, SEPS[i == N - 1]);
+    }
+    return;
+};
