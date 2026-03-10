@@ -1,10 +1,9 @@
 #include<bits/stdc++.h>
 #include<ranges>
 #include<print>
-#include<chrono>
+
 using namespace std;
 
-using Ui = unsigned int;
 using LL = long long;
 using ULL = unsigned long long;
 using Pii = pair<int, int>;
@@ -22,7 +21,6 @@ namespace CONSTS {
 	constexpr auto Step = views::stride;
 }
 using namespace CONSTS;
-using namespace std::chrono;
 
 void FastIO();
 void SetUp();
