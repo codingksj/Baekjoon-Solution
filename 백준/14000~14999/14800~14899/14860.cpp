@@ -28,9 +28,9 @@ bool Input();
 void Solve();
 void Output();
 
-int spf[MAX + 1];
+bitset<MAX + 1> isPrimes;
 int primes[PRIMES];
-ULL pCnt, N, M, res = 1;
+ULL N, M, cnt, res = 1;
 
 int main() {
 	FastIO();
@@ -49,24 +49,11 @@ void FastIO() {
 };
 
 void SetUp() {
-	for (LL n = 2; n <= MAX; n += 2) {
-		spf[n] = 2;
+	isPrimes.set();
+	for (LL n = 4; n <= MAX; n += 2) {
+		isPrimes[n] = false;
 	}
-	primes[pCnt++] = 2;
-	for (LL n = 3; n <= MAX; n += 2) {
-		if (!spf[n]) {
-			primes[pCnt++] = n;
-			spf[n] = n;
-		}
-		for (int i = 1; i < pCnt; i++) {
-			LL p = primes[i];
-			LL np = n * p;
-			if (np > MAX || p > spf[n]) {
-				break;
-			}
-			spf[np] = p;
-		}
-	}
+	primes[cnt++] = 2;
 	return;
 };
 
@@ -89,19 +76,34 @@ void Solve() {
 		}
 		return res;
 	};
-	for (int i = 0; i < pCnt; i++) {
-		ULL p = primes[i];
-		ULL pCnt = 0;
-		if (p > M) {
-			break;
+	ULL pCnt = 0, p = 2;
+	for (ULL n = p; n <= N; n <<= 1) {
+		pCnt += (N / n) * (M / n);
+	}
+	res = res * PowMod(2, pCnt % (MOD - 1)) % MOD;
+	for (LL p = 3; p <= N; p += 2) {
+		if (isPrimes[p]) {
+			primes[cnt++] = p;
+			ULL pCnt = 0;
+			for (ULL n = p; n <= N; n *= p) {
+				pCnt += (N / n) * (M / n);
+				if (n * p > MAX) {
+					break;
+				}
+			}
+			res = res * PowMod(p, pCnt % (MOD - 1)) % MOD;
 		}
-		for (ULL n = p; n <= N; n *= p) {
-			pCnt += (N / n) * (M / n);
-			if (n > N / p) {
+		for (int i = 1; i < cnt; i++) {
+			LL pp = primes[i];
+			LL np = p * pp;
+			if (np > MAX) {
+				break;
+			}
+			isPrimes[np] = false;
+			if (!(p % pp)) {
 				break;
 			}
 		}
-		res = res * PowMod(p, pCnt % (MOD - 1)) % MOD;
 	}
 };
 
