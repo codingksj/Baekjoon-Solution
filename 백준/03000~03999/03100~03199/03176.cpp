@@ -30,6 +30,7 @@ void SetUp();
 bool Input();
 void Solve();
 void DFS(int v, int d, int p);
+Pii Query(int u, int v);
 void Output();
 
 V1<Pii> G[MAX + 1];
@@ -37,7 +38,7 @@ int par[bit_width(MAX + 1)][MAX + 1];
 int mxD[bit_width(MAX + 1)][MAX + 1];
 int mnD[bit_width(MAX + 1)][MAX + 1];
 int depth[MAX + 1];
-int N, Q, u, v, w;
+int N, Q, u, v, w, mxLv;
 
 int main() {
     FastIO();
@@ -75,7 +76,7 @@ bool Input() {
 
 void Solve() {
     DFS(1, 0, 0);
-    int mxLv = bit_width((ULL)N);
+    mxLv = bit_width((ULL)N);
     for (int lv : Rng(1, mxLv)) {
         for (int i = 1; i <= N; i++) {
             int p = par[lv - 1][i];
@@ -86,38 +87,6 @@ void Solve() {
             }
         }
     }
-    auto Query = [&](int u, int v) {
-        if (u == v) {
-            return Pii(0, 0);
-        }
-        if (depth[u] > depth[v]) {
-            swap(u, v);
-        }
-        int diff = depth[v] - depth[u];
-        int mn = INF;
-        int mx = 0;
-        for (int lv = 0; diff; lv++, diff >>= 1) {
-            if (diff & 1) {
-                mn = min(mn, mnD[lv][v]);
-                mx = max(mx, mxD[lv][v]);
-                v = par[lv][v];
-            }
-        }
-        if (u == v) {
-            return Pii(mn, mx);
-        }
-        for (int lv = mxLv - 1; lv >= 0; lv--) {
-            if (par[lv][u] != par[lv][v]) {
-                mn = min({ mn, mnD[lv][u], mnD[lv][v] });
-                mx = max({ mx, mxD[lv][u], mxD[lv][v] });
-                u = par[lv][u];
-                v = par[lv][v];
-            }
-        }
-        mn = min({ mn, mnD[0][v], mnD[0][u]});
-        mx = max({ mx, mxD[0][v], mxD[0][u]});
-        return Pii(mn, mx);
-    };
     while (Q--) {
         cin >> u >> v;
         const auto& [mn, mx] = Query(u, v);
@@ -135,6 +104,38 @@ void DFS(int v, int d, int p) {
             DFS(nv, d + 1, v);
         }
     }
+};
+
+Pii Query(int u, int v) {
+    if (u == v) {
+        return Pii(0, 0);
+    }
+    if (depth[u] > depth[v]) {
+        swap(u, v);
+    }
+    int diff = depth[v] - depth[u];
+    int mn = INF, mx = 0;
+    for (int lv = 0; diff; lv++, diff >>= 1) {
+        if (diff & 1) {
+            mn = min(mn, mnD[lv][v]);
+            mx = max(mx, mxD[lv][v]);
+            v = par[lv][v];
+        }
+    }
+    if (u == v) {
+        return Pii(mn, mx);
+    }
+    for (int lv = mxLv - 1; lv >= 0; lv--) {
+        if (par[lv][u] != par[lv][v]) {
+            mn = min({ mn, mnD[lv][u], mnD[lv][v] });
+            mx = max({ mx, mxD[lv][u], mxD[lv][v] });
+            u = par[lv][u];
+            v = par[lv][v];
+        }
+    }
+    mn = min({ mn, mnD[0][v], mnD[0][u] });
+    mx = max({ mx, mxD[0][v], mxD[0][u] });
+    return Pii(mn, mx);
 };
 
 void Output() {
