@@ -30,9 +30,7 @@ bool Input();
 void Solve();
 void Output();
 
-int A[MAX];
-LL K;
-int N, res = 1;
+LL N, K, A, res = 1;
 
 int main() {
 	FastIO();
@@ -55,33 +53,25 @@ void SetUp() {
 };
 
 bool Input() {
-	cin >> N >> K;
+	cin >> N >> K >> A;
 
-	for (int i : Rng(0, N)) {
-		cin >> A[i];
-	}
 	return true;
 };
 
 void Solve() {
 	LL h = 0, s = 0;
-	int l = A[0];
-	int r = A[0];
-	int prv = 0;
+	LL l = A, r = A;
+	LL prv = 0;
 	for (int i : Rng(1, N)) {
-		int a = A[i];
-		int nl = min(l, a);
-		int nr = max(r, a);
+		cin >> A;
+		l = min(l, A);
+		r = max(r, A);
 		h = i - prv + 1;
-		s = h * (nr - nl + 1);
+		s = h * (r - l + 1);
 		if (s > K) {
 			res++;
-			l = r = a;
+			l = r = A;
 			prv = i;
-		}
-		else {
-			l = nl;
-			r = nr;
 		}
 	}
 	return;
