@@ -17,7 +17,7 @@ template<typename T> using V3 = V1<V2<T>>;
 namespace CONSTS {
 	constexpr string_view SEPS = " \n";
     constexpr Pii DT4[4] = { {-1,0}, {0,1} ,{1,0} ,{0,-1} };
-	constexpr LL MOD = 1E+9 + 7, INF = 0x3f3f3f3f, MAX = 2E+5;
+	constexpr LL MOD = 1E+9 + 7, INF = 0x3f3f3f3f, MAX = 1E+5;
     constexpr int DIGITS = 10, ALPHABETS = 26;
     constexpr auto Rng = views::iota;
     constexpr auto Rev = views::reverse;
